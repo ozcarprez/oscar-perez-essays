@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Óscar Pérez — Lo que otros no ven</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #f8f6f1;
+            --paper-dark: #efe9df;
+            --accent: #8b2500;
+            --accent-light: #a83a1a;
+            --gray: #6b6560;
+            --gray-light: #9e9790;
+            --rule: #d4cec5;
+            --serif: 'Playfair Display', Georgia, serif;
+            --body: 'Source Serif 4', Georgia, serif;
+            --sans: 'DM Sans', Helvetica, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 18px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--body);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== MASTHEAD ===== */
+        .masthead {
+            border-bottom: 3px double var(--ink);
+            padding: 2rem 0 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .masthead::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background: var(--ink);
+            margin-bottom: 1.5rem;
+        }
+
+        .masthead-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .masthead-name {
+            font-family: var(--serif);
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .masthead-tagline {
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+
+        .masthead-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 1.25rem;
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .masthead-nav a {
+            color: var(--ink);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .masthead-nav a:hover {
+            color: var(--accent);
+        }
+
+        /* ===== FEATURED / HERO ===== */
+        .hero {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem 3rem;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .hero-label {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            max-width: 750px;
+        }
+
+        .hero-excerpt {
+            margin-top: 1.25rem;
+            font-size: 1.1rem;
+            line-height: 1.75;
+            color: var(--gray);
+            max-width: 650px;
+            font-weight: 300;
+        }
+
+        .hero-meta {
+            margin-top: 1.5rem;
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            color: var(--gray-light);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .hero-read-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1.5px solid var(--accent);
+            padding-bottom: 2px;
+            transition: all 0.2s;
+        }
+
+        .hero-read-link:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* ===== SECTION DIVIDER ===== */
+        .section-header {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 0;
+        }
+
+        .section-header h2 {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 600;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        /* ===== ESSAYS GRID ===== */
+        .essays {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .essay-item {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 1.75rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--rule);
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .essay-item:hover .essay-title {
+            color: var(--accent);
+        }
+
+        .essay-number {
+            font-family: var(--serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--rule);
+            line-height: 1;
+            padding-top: 0.15rem;
+        }
+
+        .essay-content {
+            min-width: 0;
+        }
+
+        .essay-tag {
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .essay-title {
+            font-family: var(--serif);
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            transition: color 0.2s;
+        }
+
+        .essay-excerpt {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        .essay-meta {
+            margin-top: 0.75rem;
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            color: var(--gray-light);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 4rem 2rem;
+            margin-top: 1rem;
+        }
+
+        .about-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .about-label {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text {
+            font-family: var(--body);
+            font-size: 1.1rem;
+            line-height: 1.85;
+            font-weight: 300;
+            color: #d4cec5;
+        }
+
+        .about-text strong {
+            color: var(--paper);
+            font-weight: 500;
+        }
+
+        .about-text p + p {
+            margin-top: 1.25rem;
+        }
+
+        /* ===== SUBSCRIBE ===== */
+        .subscribe {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .subscribe-title {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .subscribe-desc {
+            font-family: var(--body);
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        .subscribe-form {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 420px;
+            margin: 1.5rem auto 0;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--rule);
+            background: white;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .subscribe-form input:focus {
+            border-color: var(--ink);
+        }
+
+        .subscribe-form input::placeholder {
+            color: var(--gray-light);
+        }
+
+        .subscribe-form button {
+            padding: 0.7rem 1.5rem;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .subscribe-form button:hover {
+            background: var(--accent);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            color: var(--gray-light);
+            letter-spacing: 0.1em;
+        }
+
+        .footer a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .masthead {
+            animation: fadeUp 0.6s ease-out;
+        }
+
+        .hero {
+            animation: fadeUp 0.6s ease-out 0.15s both;
+        }
+
+        .essay-item {
+            animation: fadeUp 0.5s ease-out both;
+        }
+
+        .essay-item:nth-child(1) { animation-delay: 0.3s; }
+        .essay-item:nth-child(2) { animation-delay: 0.4s; }
+        .essay-item:nth-child(3) { animation-delay: 0.5s; }
+        .essay-item:nth-child(4) { animation-delay: 0.6s; }
+        .essay-item:nth-child(5) { animation-delay: 0.7s; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            html { font-size: 16px; }
+
+            .masthead-name {
+                font-size: 2.2rem;
+            }
+
+            .masthead-nav {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+
+            .hero-title {
+                font-size: 1.9rem;
+            }
+
+            .essay-item {
+                grid-template-columns: 40px 1fr;
+                gap: 1rem;
+            }
+
+            .essay-number {
+                font-size: 1.8rem;
+            }
+
+            .essay-title {
+                font-size: 1.2rem;
+            }
+
+            .subscribe-form {
+                flex-direction: column;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MASTHEAD -->
+    <header class="masthead">
+        <div class="masthead-inner">
+            <h1 class="masthead-name">Óscar Pérez</h1>
+            <p class="masthead-tagline">Escribo sobre lo que otros no ven en los negocios</p>
+            <nav class="masthead-nav">
+                <a href="#ensayos">Ensayos</a>
+                <a href="#about">Sobre mí</a>
+                <a href="#subscribe">Suscribirse</a>
+                <a href="#" style="color: var(--gray-light);">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- FEATURED ESSAY -->
+    <section class="hero">
+        <p class="hero-label">Ensayo destacado</p>
+        <h2 class="hero-title">Innovar no es suficiente: hay que rediseñar el mundo donde opera la innovación</h2>
+        <p class="hero-excerpt">Disney no se limitó a hacer mejores películas. Creó Disneylandia porque entendió que si quieres que algo funcione realmente bien, tienes que diseñar todo el ecosistema. Lo mismo aplica en el financiamiento agrícola.</p>
+        <p class="hero-meta">Ensayo Nº 20 — Sistemas &amp; Diseño</p>
+        <a href="#" class="hero-read-link">Leer ensayo completo →</a>
+    </section>
+
+    <!-- ESSAYS -->
+    <div class="section-header" id="ensayos">
+        <h2>Ensayos recientes</h2>
+    </div>
+
+    <section class="essays">
+        <article class="essay-item">
+            <span class="essay-number">45</span>
+            <div class="essay-content">
+                <p class="essay-tag">Capital &amp; Riesgo</p>
+                <h3 class="essay-title">El agricultor financia al mundo sin saberlo</h3>
+                <p class="essay-excerpt">Dentro de la cadena de exportación agrícola existe un subsidio invisible: el agricultor asume el riesgo de crédito que debería pertenecer a otros.</p>
+                <p class="essay-meta">2025</p>
+            </div>
+        </article>
+
+        <article class="essay-item">
+            <span class="essay-number">38</span>
+            <div class="essay-content">
+                <p class="essay-tag">Fricción Artificial</p>
+                <h3 class="essay-title">Por qué la tecnología no resuelve el factoraje agrícola</h3>
+                <p class="essay-excerpt">La promesa del fintech es eliminar fricción. Pero cuando la fricción es regulatoria y cultural, la tecnología sola no alcanza.</p>
+                <p class="essay-meta">2024</p>
+            </div>
+        </article>
+
+        <article class="essay-item">
+            <span class="essay-number">32</span>
+            <div class="essay-content">
+                <p class="essay-tag">Patrones</p>
+                <h3 class="essay-title">Lo que Buffett ve y Wall Street ignora sobre la agricultura</h3>
+                <p class="essay-excerpt">El value investing aplicado al campo revela oportunidades que los modelos financieros convencionales no capturan.</p>
+                <p class="essay-meta">2024</p>
+            </div>
+        </article>
+
+        <article class="essay-item">
+            <span class="essay-number">20</span>
+            <div class="essay-content">
+                <p class="essay-tag">Sistemas &amp; Diseño</p>
+                <h3 class="essay-title">Innovar no es suficiente: hay que rediseñar el mundo donde opera la innovación</h3>
+                <p class="essay-excerpt">Disney pasó de mejorar películas a diseñar Disneylandia. La lección para el factoraje: no basta optimizar procesos internos si el ecosistema no lo permite.</p>
+                <p class="essay-meta">2024</p>
+            </div>
+        </article>
+
+        <article class="essay-item">
+            <span class="essay-number">12</span>
+            <div class="essay-content">
+                <p class="essay-tag">Dos Lados</p>
+                <h3 class="essay-title">La vista desde el otro lado del escritorio</h3>
+                <p class="essay-excerpt">Trabajé en fintech agrícola y conozco el campo. Lo que aprendí viendo ambos lados de la mesa es que ninguno entiende al otro.</p>
+                <p class="essay-meta">2024</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="about-inner">
+            <p class="about-label">Sobre el autor</p>
+            <div class="about-text">
+                <p><strong>Óscar Pérez</strong> escribe sobre las conexiones invisibles en los negocios — los patrones que cruzan industrias, los sistemas que nadie cuestiona, y la fricción artificial que determina quién gana y quién pierde.</p>
+                <p>Con experiencia en comercio agrícola de exportación y fintech, su perspectiva nace de haber operado en ambos lados de la mesa: el campo que produce y el capital que financia. Esa intersección — donde la tecnología, la regulación y la realidad chocan — es donde vive su trabajo.</p>
+                <p>Inspirado por el pensamiento de Buffett, Munger y Pabrai, sus ensayos buscan responder una pregunta simple: <strong>¿por qué las cosas funcionan como funcionan, y qué pasaría si no tuvieran que ser así?</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUBSCRIBE -->
+    <section class="subscribe" id="subscribe">
+        <h2 class="subscribe-title">Recibe los ensayos directamente</h2>
+        <p class="subscribe-desc">Un ensayo nuevo cada semana. Sin spam. Sin ruido.</p>
+        <form class="subscribe-form" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'font-family: var(--sans); font-size: 0.8rem; color: var(--accent); padding: 0.7rem;\'>Gracias. Pronto recibirás el primer ensayo.</p>';">
+            <input type="email" placeholder="tu@email.com" required>
+            <button type="submit">Suscribirse</button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>© 2025 Óscar Pérez</span>
+        <div class="footer-links">
+            <a href="#">LinkedIn</a>
+            <a href="#">Twitter</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+
+</body>
+</html>
