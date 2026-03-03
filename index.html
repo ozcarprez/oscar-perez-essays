@@ -22,16 +22,9 @@
             --sans: 'DM Sans', Helvetica, sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html {
-            font-size: 18px;
-            scroll-behavior: smooth;
-        }
+        html { font-size: 18px; scroll-behavior: smooth; }
 
         body {
             background: var(--paper);
@@ -46,7 +39,10 @@
             border-bottom: 3px double var(--ink);
             padding: 2rem 0 1.5rem;
             text-align: center;
-            position: relative;
+            position: sticky;
+            top: 0;
+            background: var(--paper);
+            z-index: 100;
         }
 
         .masthead::before {
@@ -101,9 +97,7 @@
             transition: color 0.2s;
         }
 
-        .masthead-nav a:hover {
-            color: var(--accent);
-        }
+        .masthead-nav a:hover { color: var(--accent); }
 
         /* ===== FEATURED / HERO ===== */
         .hero {
@@ -130,7 +124,11 @@
             line-height: 1.15;
             letter-spacing: -0.02em;
             max-width: 750px;
+            cursor: pointer;
+            transition: color 0.2s;
         }
+
+        .hero-title:hover { color: var(--accent); }
 
         .hero-excerpt {
             margin-top: 1.25rem;
@@ -164,10 +162,47 @@
             border-bottom: 1.5px solid var(--accent);
             padding-bottom: 2px;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .hero-read-link:hover {
             color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* ===== FILTER TABS ===== */
+        .filter-bar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 0;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            border: 1px solid var(--rule);
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .filter-btn.active {
+            background: var(--ink);
+            color: var(--paper);
             border-color: var(--ink);
         }
 
@@ -187,6 +222,15 @@
             font-weight: 600;
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--rule);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .essay-count {
+            font-weight: 400;
+            color: var(--gray-light);
+            letter-spacing: 0.1em;
         }
 
         /* ===== ESSAYS GRID ===== */
@@ -202,15 +246,13 @@
             gap: 1.75rem;
             padding: 2rem 0;
             border-bottom: 1px solid var(--rule);
-            text-decoration: none;
-            color: inherit;
-            transition: background 0.2s;
             cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .essay-item:hover .essay-title {
-            color: var(--accent);
-        }
+        .essay-item:hover .essay-title { color: var(--accent); }
+
+        .essay-item.hidden { display: none; }
 
         .essay-number {
             font-family: var(--serif);
@@ -221,9 +263,7 @@
             padding-top: 0.15rem;
         }
 
-        .essay-content {
-            min-width: 0;
-        }
+        .essay-content { min-width: 0; }
 
         .essay-tag {
             font-family: var(--sans);
@@ -259,6 +299,138 @@
             color: var(--gray-light);
             letter-spacing: 0.1em;
             text-transform: uppercase;
+        }
+
+        /* ===== FULL ESSAY OVERLAY ===== */
+        .essay-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            padding: 3rem 1rem;
+        }
+
+        .essay-overlay.open { display: flex; }
+
+        .essay-full {
+            background: var(--paper);
+            max-width: 700px;
+            width: 100%;
+            padding: 3.5rem 3rem 4rem;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.15);
+            animation: slideUp 0.35s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .essay-full-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: none;
+            border: 1px solid var(--rule);
+            color: var(--gray);
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .essay-full-close:hover {
+            background: var(--ink);
+            color: var(--paper);
+            border-color: var(--ink);
+        }
+
+        .essay-full-number {
+            font-family: var(--serif);
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--rule);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .essay-full-tag {
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .essay-full-title {
+            font-family: var(--serif);
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .essay-full-body {
+            font-family: var(--body);
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--ink);
+        }
+
+        .essay-full-body p {
+            margin-bottom: 1.25rem;
+        }
+
+        .essay-full-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .essay-full-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--rule);
+        }
+
+        .essay-full-nav button {
+            font-family: var(--sans);
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 0.4rem 0;
+            border-bottom: 1.5px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .essay-full-nav button:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .essay-full-nav button:disabled {
+            color: var(--gray-light);
+            cursor: default;
         }
 
         /* ===== ABOUT SECTION ===== */
@@ -297,9 +469,7 @@
             font-weight: 500;
         }
 
-        .about-text p + p {
-            margin-top: 1.25rem;
-        }
+        .about-text p + p { margin-top: 1.25rem; }
 
         /* ===== SUBSCRIBE ===== */
         .subscribe {
@@ -343,13 +513,8 @@
             transition: border-color 0.2s;
         }
 
-        .subscribe-form input:focus {
-            border-color: var(--ink);
-        }
-
-        .subscribe-form input::placeholder {
-            color: var(--gray-light);
-        }
+        .subscribe-form input:focus { border-color: var(--ink); }
+        .subscribe-form input::placeholder { color: var(--gray-light); }
 
         .subscribe-form button {
             padding: 0.7rem 1.5rem;
@@ -365,9 +530,7 @@
             transition: background 0.2s;
         }
 
-        .subscribe-form button:hover {
-            background: var(--accent);
-        }
+        .subscribe-form button:hover { background: var(--accent); }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -389,84 +552,71 @@
             transition: color 0.2s;
         }
 
-        .footer a:hover {
-            color: var(--accent);
-        }
+        .footer a:hover { color: var(--accent); }
 
         .footer-links {
             display: flex;
             gap: 1.5rem;
         }
 
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 40px;
+            height: 40px;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 1.2rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: background 0.2s;
+        }
+
+        .back-to-top.visible { display: flex; }
+        .back-to-top:hover { background: var(--accent); }
+
         /* ===== ANIMATIONS ===== */
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .masthead {
-            animation: fadeUp 0.6s ease-out;
-        }
-
-        .hero {
-            animation: fadeUp 0.6s ease-out 0.15s both;
-        }
-
-        .essay-item {
-            animation: fadeUp 0.5s ease-out both;
-        }
-
-        .essay-item:nth-child(1) { animation-delay: 0.3s; }
-        .essay-item:nth-child(2) { animation-delay: 0.4s; }
-        .essay-item:nth-child(3) { animation-delay: 0.5s; }
-        .essay-item:nth-child(4) { animation-delay: 0.6s; }
-        .essay-item:nth-child(5) { animation-delay: 0.7s; }
+        .masthead { animation: fadeUp 0.6s ease-out; }
+        .hero { animation: fadeUp 0.6s ease-out 0.15s both; }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             html { font-size: 16px; }
-
-            .masthead-name {
-                font-size: 2.2rem;
-            }
-
-            .masthead-nav {
-                gap: 1.5rem;
-                flex-wrap: wrap;
-            }
-
-            .hero-title {
-                font-size: 1.9rem;
-            }
-
+            .masthead-name { font-size: 2.2rem; }
+            .masthead-nav { gap: 1.5rem; flex-wrap: wrap; }
+            .hero-title { font-size: 1.9rem; }
             .essay-item {
                 grid-template-columns: 40px 1fr;
                 gap: 1rem;
             }
-
-            .essay-number {
-                font-size: 1.8rem;
-            }
-
-            .essay-title {
-                font-size: 1.2rem;
-            }
-
-            .subscribe-form {
-                flex-direction: column;
-            }
-
+            .essay-number { font-size: 1.8rem; }
+            .essay-title { font-size: 1.2rem; }
+            .subscribe-form { flex-direction: column; }
             .footer {
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
             }
+            .essay-full {
+                padding: 2.5rem 1.5rem 3rem;
+            }
+            .essay-full-number { font-size: 3.5rem; }
+            .essay-full-title { font-size: 1.5rem; }
+            .filter-bar { gap: 0.35rem; }
+            .filter-btn { font-size: 0.58rem; padding: 0.35rem 0.6rem; }
+            .masthead { position: static; }
         }
     </style>
 </head>
@@ -489,68 +639,36 @@
     <!-- FEATURED ESSAY -->
     <section class="hero">
         <p class="hero-label">Ensayo destacado</p>
-        <h2 class="hero-title">Innovar no es suficiente: hay que rediseñar el mundo donde opera la innovación</h2>
-        <p class="hero-excerpt">Disney no se limitó a hacer mejores películas. Creó Disneylandia porque entendió que si quieres que algo funcione realmente bien, tienes que diseñar todo el ecosistema. Lo mismo aplica en el financiamiento agrícola.</p>
-        <p class="hero-meta">Ensayo Nº 20 — Sistemas &amp; Diseño</p>
-        <a href="#" class="hero-read-link">Leer ensayo completo →</a>
+        <h2 class="hero-title" onclick="openEssay(49)">Cómo Elon Musk hizo crecer cada una de sus empresas</h2>
+        <p class="hero-excerpt">En todas sus empresas, Musk hace lo mismo: identifica qué le impide al cliente dar el primer paso, y luego encuentra a alguien más — alguien que tiene su propio incentivo — para que facilite esa entrada.</p>
+        <p class="hero-meta">Ensayo Nº 49 — Estrategia &amp; Adopción</p>
+        <a class="hero-read-link" onclick="openEssay(49)">Leer ensayo completo →</a>
     </section>
 
-    <!-- ESSAYS -->
-    <div class="section-header" id="ensayos">
-        <h2>Ensayos recientes</h2>
+    <!-- FILTER -->
+    <div class="filter-bar" id="ensayos">
+        <button class="filter-btn active" onclick="filterEssays('all', this)">Todos</button>
+        <button class="filter-btn" onclick="filterEssays('Estrategia', this)">Estrategia</button>
+        <button class="filter-btn" onclick="filterEssays('Agricultura', this)">Agricultura</button>
+        <button class="filter-btn" onclick="filterEssays('Factoraje', this)">Factoraje</button>
+        <button class="filter-btn" onclick="filterEssays('Innovación', this)">Innovación</button>
+        <button class="filter-btn" onclick="filterEssays('Psicología', this)">Psicología</button>
+        <button class="filter-btn" onclick="filterEssays('Personal', this)">Personal</button>
+        <button class="filter-btn" onclick="filterEssays('Sistemas', this)">Sistemas</button>
     </div>
 
-    <section class="essays">
-        <article class="essay-item">
-            <span class="essay-number">45</span>
-            <div class="essay-content">
-                <p class="essay-tag">Capital &amp; Riesgo</p>
-                <h3 class="essay-title">El agricultor financia al mundo sin saberlo</h3>
-                <p class="essay-excerpt">Dentro de la cadena de exportación agrícola existe un subsidio invisible: el agricultor asume el riesgo de crédito que debería pertenecer a otros.</p>
-                <p class="essay-meta">2025</p>
-            </div>
-        </article>
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+        <h2>Ensayos <span class="essay-count" id="essayCount">49 ensayos</span></h2>
+    </div>
 
-        <article class="essay-item">
-            <span class="essay-number">38</span>
-            <div class="essay-content">
-                <p class="essay-tag">Fricción Artificial</p>
-                <h3 class="essay-title">Por qué la tecnología no resuelve el factoraje agrícola</h3>
-                <p class="essay-excerpt">La promesa del fintech es eliminar fricción. Pero cuando la fricción es regulatoria y cultural, la tecnología sola no alcanza.</p>
-                <p class="essay-meta">2024</p>
-            </div>
-        </article>
+    <!-- ESSAYS LIST -->
+    <section class="essays" id="essaysList"></section>
 
-        <article class="essay-item">
-            <span class="essay-number">32</span>
-            <div class="essay-content">
-                <p class="essay-tag">Patrones</p>
-                <h3 class="essay-title">Lo que Buffett ve y Wall Street ignora sobre la agricultura</h3>
-                <p class="essay-excerpt">El value investing aplicado al campo revela oportunidades que los modelos financieros convencionales no capturan.</p>
-                <p class="essay-meta">2024</p>
-            </div>
-        </article>
-
-        <article class="essay-item">
-            <span class="essay-number">20</span>
-            <div class="essay-content">
-                <p class="essay-tag">Sistemas &amp; Diseño</p>
-                <h3 class="essay-title">Innovar no es suficiente: hay que rediseñar el mundo donde opera la innovación</h3>
-                <p class="essay-excerpt">Disney pasó de mejorar películas a diseñar Disneylandia. La lección para el factoraje: no basta optimizar procesos internos si el ecosistema no lo permite.</p>
-                <p class="essay-meta">2024</p>
-            </div>
-        </article>
-
-        <article class="essay-item">
-            <span class="essay-number">12</span>
-            <div class="essay-content">
-                <p class="essay-tag">Dos Lados</p>
-                <h3 class="essay-title">La vista desde el otro lado del escritorio</h3>
-                <p class="essay-excerpt">Trabajé en fintech agrícola y conozco el campo. Lo que aprendí viendo ambos lados de la mesa es que ninguno entiende al otro.</p>
-                <p class="essay-meta">2024</p>
-            </div>
-        </article>
-    </section>
+    <!-- ESSAY OVERLAY -->
+    <div class="essay-overlay" id="essayOverlay" onclick="if(event.target===this)closeEssay()">
+        <div class="essay-full" id="essayFull"></div>
+    </div>
 
     <!-- ABOUT -->
     <section class="about" id="about">
@@ -583,6 +701,1043 @@
             <a href="#">Contacto</a>
         </div>
     </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const essays = [
+  {
+    id: 1,
+    tag: "Psicología",
+    title: "Cuando admitir un error puede jugar en tu contra",
+    excerpt: "Al ser observador en llamadas con clientes molestos, noté algo curioso: cuando se admite el error directamente, el cliente se vuelve más demandante.",
+    body: `En el trabajo, me toca estar en llamadas donde compañeros de trabajo llevan la comunicación con clientes molestos.
+
+Al ser un observador en estas llamadas, noté algo curioso: cuando se admite el error directamente y ofrecemos una disculpa, el cliente se vuelve más demandante.
+
+Esto tiene sentido si lo vemos desde la psicología. Aquí algunos sesgos que explican por qué pasa esto:
+
+Sesgo de Anclaje → Cuando admites un error, el cliente se enfoca en eso y lo usa como referencia para exigir más. En cambio, si tomas una postura de acción inmediata, su atención se mueve hacia la solución.
+
+Sesgo de Consistencia y Compromiso → Si el cliente siente que ganó la primera batalla, buscará mantener su posición dominante. Pero si transmites urgencia y solución, se relaja porque siente que el problema ya está en camino de resolverse.
+
+Framing Effect (Efecto de Marco) → Decir "Sí, cometimos un error, lo sentimos" pone la conversación en el pasado y abre la puerta a más reclamos. En cambio, "Estamos en ello, lo resolvemos ahora" lleva la discusión al presente y futuro.
+
+Sesgo de Reacción → Cuando alguien siente que tiene el control, presiona más. Disculparte demasiado da al cliente una sensación de ventaja que lo lleva a exigir más. Pero si tomas la iniciativa y defines el ritmo, reduces esa reacción.
+
+¿Les ha pasado algo similar? ¿Qué estrategia usan en estas situaciones?`
+  },
+  {
+    id: 2,
+    tag: "Agricultura",
+    title: "¿Por qué si el consumidor paga al instante, los proveedores esperan semanas?",
+    excerpt: "Trabajando en factoraje agrícola, pensé en una solución: un modelo colectivo para productos frescos inspirado en los colectivos de Tijuana.",
+    body: `¿Por qué si el consumidor paga al instante, los proveedores esperan semanas o meses por su dinero?
+
+Trabajando en factoraje agrícola, pensé en una solución: un modelo colectivo para productos frescos. Inspirado en los colectivos de Tijuana (como los que rentan espacios a vendedores), imagino un local donde productores alquilan su lugar. El ingreso viene de la renta, no de la reventa, permitiendo gestionar los pagos más rápido.
+
+¿Han visto algo similar en el mundo de los frescos?`
+  },
+  {
+    id: 3,
+    tag: "Estrategia",
+    title: "Cómo poder dar un nuevo uso a la red de contactos",
+    excerpt: "Por años me dediqué a la compraventa de hortalizas para exportación, lo que me dejó una red sólida de agricultores. ¿Y si les ofrezco crear su propio producto?",
+    body: `Por años me dediqué a la compraventa de hortalizas de Baja California para exportación a California, lo que me dejó una red sólida de agricultores.
+
+En algún momento quise lanzar un producto fresco empacado y conocí una empresa experta en formular productos, desde la imagen hasta análisis de laboratorio.
+
+Pensé en un snack de zanahorias o algo con betabel, típico de la región. Pero no seguí porque no tenía claro el rumbo.
+
+Con el tiempo, buscando nuevas oportunidades, me pregunté: ¿qué tengo a mi alcance? Mi base de contactos seguía ahí y se me ocurrió: ¿y si les ofrezco a los agricultores crear su propio producto?
+
+Es interesante como replantar la pregunta genera nuevas posibilidades.`
+  },
+  {
+    id: 4,
+    tag: "Sistemas",
+    title: "Cuando alguien agrega complejidad para volverse indispensable",
+    excerpt: "Me enojé porque alguien agregó una nueva plantilla de Excel. Reflexioné: ¿será que incorporar sistemas que solo tú sabes usar es una estrategia para ser relevante?",
+    body: `Hace unos días me enojé en el trabajo porque alguien agregó una nueva plantilla de Excel.
+
+Me molestó mucho, ya que eso retrasó el progreso. Pasó el día y me puse a pensar en la persona que la había agregado; concluí que es oportunista. Esto me llevó a reflexionar: ¿será que, para ser relevante en el trabajo, una estrategia es incorporar sistemas que solo tú sabes usar? No lo había pensado así.`
+  },
+  {
+    id: 5,
+    tag: "Agricultura",
+    title: "Existe un nicho enorme en crear marcas agrícolas",
+    excerpt: "Visitando exportadores de berries en Michoacán, descubrí que los que tienen marca no solo venden mejor, también ayudan al comprador a colocar el producto.",
+    body: `Recientemente trabajé con exportadores de berries y tuve la oportunidad de visitar Michoacán. Regresé a Tijuana con una idea dando vueltas en mi cabeza:
+
+Que existe un nicho enorme en crear marcas agrícolas.
+
+¿Por qué no lo había pensado antes?
+
+Aunque tengo experiencia comprando y vendiendo hortalizas, nunca se me ocurrió que crear una marca pudiera ser clave. Al contrario, en ese mundo lo común es exportar con cajas recicladas que van y vienen varias veces entre México y EE.UU., sin identidad propia.
+
+Pero con las berries es diferente, y es obvio por qué: desde el campo se empacan con presentación, llevan una etiqueta con marca registrada y código de barras, así llegan directo a los supermercados.
+
+Una de las primeras preguntas que hace un comprador es: ¿Qué etiqueta llevan las berries?. Solo con eso ya se hacen una idea si se va a poder vender o no.
+
+Y ahora, viendo a los exportadores con marca versus los que no, me doy cuenta: no solo venden mejor los que tienen marca, sino que también ayudan al comprador a colocar el producto más fácilmente.`
+  },
+  {
+    id: 6,
+    tag: "Estrategia",
+    title: "Lo opuesto a una buena idea es una buena idea",
+    excerpt: "Comparando la carne Kobe con la de mi cuñado, se me ocurrió que estaría dispuesto a pagar más por carne que simplemente sea carne.",
+    body: `Creo que todos queremos que el producto que compramos sea exactamente lo que promete ser, nada más ni nada menos.
+
+Por ejemplo, vi un video de Luisito Comunica en Japón hablando de la carne Kobe. No solo decía que era deliciosa, sino también carísima.
+
+Y eso me hizo pensar en mi cuñado. Él tiene un poco de ganado que engorda con una inyección que les da mucha sed, logrando que engorde en tres meses de una manera ilegal.
+
+Si alguna vez has cocinado un bistec que al ponerlo en el sartén se encoge a la mitad, ese es.
+
+Comparando la carne Kobe con la de mi cuñado, se me ocurrió decirle que yo estaría dispuesto a pagar más por carne que simplemente sea carne.
+
+Esta un lema de Rory Sutherland que dice "Lo opuesto a una buena idea es una buena idea".
+
+Queriendo decir que mi cuñado puede vender un ganado flaco también caro.`
+  },
+  {
+    id: 7,
+    tag: "Estrategia",
+    title: "Cómo Elon Musk facilita sus ventas usando apalancamiento",
+    excerpt: "En PayPal y SolarCity, Musk usó otra plataforma como apalancamiento para hacer la venta más fácil. Esa estrategia se repite en todo.",
+    body: `Yo soy un admirador de cómo se venden las cosas.
+
+Trabajo en ventas, pero no tengo mucha labia. Pienso lento y me toma tiempo idear cómo vender algo, por eso admiro a Elon Musk.
+
+He consumido mucho contenido sobre él y siempre se habla de su enfoque en primeros principios, pero pocas veces de cómo facilita sus ventas.
+
+Por ejemplo, con PayPal, para que la gente usara la plataforma, Elon propuso regalar tarjetas de crédito de 10 mil dólares a personas con mal o buen historial crediticio, incentivando transacciones.
+
+Con SolarCity, instalaban paneles solares sin depósito: se asociaron con una financiera que pagaba a SolarCity por adelantado y el cliente pagaba a plazos a la financiera.
+
+En ambos casos, veo una estrategia clara: usar otra plataforma como apalancamiento para hacer la venta más fácil.`
+  },
+  {
+    id: 8,
+    tag: "Personal",
+    title: "Saber manejar momentos complicados también es una habilidad",
+    excerpt: "En un viaje de trabajo pregunté a mis compañeros si habían aprendido alguna habilidad nueva. La capacidad de manejar conflictos tiene valor — y buen dinero.",
+    body: `En un viaje de trabajo, donde como en toda empresa se habla de problemas, decidí preguntarles a mis compañeros si habían aprendido alguna habilidad nueva ahí. Pero vi que no era una pregunta fácil de responder así nomás, así que cambié el enfoque: '¿No creen que saber manejar momentos complicados también es una habilidad? Y una que puede pagar bien'.
+
+Sé que, por naturaleza, no es fácil verlo así. Todos queremos huir del conflicto, no enfrentarlo. Pero si te das cuenta de que esa capacidad tiene valor —y buen dinero—, tal vez empieces a ver los problemas como oportunidades disfrazadas.`
+  },
+  {
+    id: 9,
+    tag: "Estrategia",
+    title: "La idea de Cloning de Mohnish Pabrai",
+    excerpt: "Llevo años persiguiendo la idea de negocio única. Pero Pabrai dice: no inventes algo nuevo, copia un negocio que ya sea exitoso.",
+    body: `Una de las cosas más increíbles que he aprendido últimamente es la idea de Cloning que comparte Mohnish Pabrai.
+
+Llevo años persiguiendo esa idea de negocio única, diferente a todo, porque siempre he escuchado que ahí está la clave del éxito.
+
+Pero el resultado es que mis planes se vuelven tan complicados que me abruman, me intimidan y termino sin hacer nada.
+
+Entonces aparece Mohnish Pabrai con su 'Cloning'.
+
+Él dice: no inventes algo nuevo, copia un negocio que ya sea exitoso. No se trata de plagiar sin pensar, sino de tomar un modelo probado —uno que ya tiene clientes, ingresos, demanda— y replicarlo tal cual o con pequeños ajustes en otro lugar o contexto.
+
+Su argumento es simple: si un negocio funciona bien, el mercado suele tener espacio para dos o tres más como ese. Piensa en cuántas cafeterías o cadenas de hamburguesas existen y prosperan.
+
+Lo curioso es que, aunque sabes que el modelo es bueno, copiar te hace sentir raro, como si fueras menos original o valioso.
+
+Pero ahí está la trampa.`
+  },
+  {
+    id: 10,
+    tag: "Factoraje",
+    title: "El capital no llega por magia. Llega cuando estás listo para recibirlo",
+    excerpt: "Las empresas que no acceden a capital, no es solo que les falte dinero; les falta estructura. Un balance bien armado o simplemente orden en su operación.",
+    body: `Trabajar en ProducePay me ha dado la posibilidad de conocer agricultores bien establecidos de varias partes de la república.
+
+En mi último viaje visité una empresa que produce fresa, era impresionante ver la calidad de trabajo que le metían al campo y a todo su proceso.
+
+Parte de la visita fue para explicarles un nuevo servicio financiero.
+
+Y eso me hizo reflexionar.
+
+Las empresas a las que se les ofrece capital están preparadas: tienen estados financieros claros, procesos definidos.
+
+Las que no acceden a capital, no es solo que les falte dinero; les falta estructura. Puede ser un balance bien armado, o simplemente orden en su operación.
+
+El capital no llega por magia. Llega cuando estás listo para recibirlo.`
+  },
+  {
+    id: 11,
+    tag: "Sistemas",
+    title: "Los mercados no solo viven de lo que se dice, sino de lo que se calla",
+    excerpt: "El subtexto es clave. Las necesidades tácitas, los ajustes discretos y las decisiones basadas en contexto. Diseña con eso en mente.",
+    body: `Trabajé en plataformas de Marketplace y servicios que conectan vendedores con compradores y noté algo: los mercados no solo viven de lo que se dice, sino de lo que se calla.
+
+El subtexto es clave.
+
+Ahí están las necesidades tácitas, los ajustes discretos y las decisiones basadas en contexto.
+
+Si estás pensando en crear uno, diseña con eso en mente: deja espacio para lo no dicho, porque eso es lo que lo hace humano y funcional.`
+  },
+  {
+    id: 12,
+    tag: "Personal",
+    title: "De tomar todo personal a construir procesos que me liberaron",
+    excerpt: "Viendo Narcos tuve una epifanía: el éxito no dependía de las personas, sino de los procesos. Desde entonces, la diferencia ha sido enorme.",
+    body: `Cuando era broker de hortalizas, la competencia era feroz. No solo competía por precios o clientes, sino que también lidiaba con roces personales. Algunos hablaban mal de mí con los agricultores, y eso me afectaba profundamente.
+
+Me volví híper consciente de las personas: sus palabras, sus acciones, sus miradas. Todo lo tomaba personal. Llegué a un punto en que no quería que nadie me viera, y con los años, esa desconfianza solo creció.
+
+Trabajar desde casa marcó un antes y un después. Coordinaba todo por teléfono, sin pisar el campo ni visitar agricultores.
+
+Un día, mientras veía la serie Narcos, tuve una epifanía. Observé cómo un jefe de cartel diseñaba procesos para que, si capturaban a uno de sus hombres, la operación no colapsara. Me pareció fascinante. Pensé: "Estos no son los mejores empleados. Algunos usan armas, otros drogas, y aun así, con procesos sólidos, el sistema sobrevive".
+
+Eso me hizo darme cuenta de algo clave: el éxito no dependía de las personas, sino de los procesos. Yo había estado enfocándome en lo que otros decían o hacían, dejando que sus acciones me afectaran. Pero la gente no siempre actúa con mala intención; a veces, simplemente están pasando por un mal día, y no puedes saberlo.
+
+Mi conclusión fue simple pero transformadora: si quiero protegerme y crecer, debo crear procesos. Procesos que funcionen independientemente de las personas, que me den control y me liberen de depender de lo que otros piensen o hagan. Desde entonces, he trabajado en estructurar mi operación así, y la diferencia ha sido enorme.
+
+A veces, las lecciones más valiosas vienen de los lugares más inesperados. ¿Tú en qué te enfocas: en las personas o en los procesos?`
+  },
+  {
+    id: 13,
+    tag: "Personal",
+    title: "Dar lo mejor de mí fue mi mejor filtro",
+    excerpt: "Las personas ventajistas no tardaban en mostrar sus intenciones. Mi disposición a dar lo mejor las hacía actuar rápido.",
+    body: `Mi mayor aprendizaje como broker de hortalizas: dar lo mejor de mí fue mi mejor filtro.
+
+Cuando empecé en la compraventa de hortalizas, mi mamá estaba preocupada. Sabía que yo no tenía mucha "malicia" y que eso podía meterme en problemas. Su consejo era constante: "Ten mucho cuidado a quién le compras y a quién le vendes".
+
+Al principio, me sentía abrumado. ¿Cómo iba a estar pendiente de cada persona? Pensaba que, si me enfocaba tanto en "cuidarme" de los demás, nunca avanzaría. Quería hacer negocio, no convertirme en detective.
+
+Pero las primeras transacciones que salieron mal me enseñaron algo inesperado. Como novato, mi enfoque era dar lo mejor de mí en cada trato, con todos, sin excepciones. Y eso trajo dos resultados:
+
+1. Las personas ventajistas no tardaban en mostrar sus intenciones. Mi disposición a dar lo mejor las hacía actuar rápido, casi como si no pudieran evitarlo.
+
+2. Al mismo tiempo, esa actitud sincera y generosa me abrió puertas con gente que valoraba mi esfuerzo y quería trabajar conmigo.
+
+Ahí entendí mi mayor lección: dar lo mejor de ti no solo es una forma de trabajar, sino una estrategia. Es el filtro perfecto. Las malas intenciones salen a la luz rápido, mientras que las buenas conexiones se fortalecen.`
+  },
+  {
+    id: 14,
+    tag: "Estrategia",
+    title: "Keep It Simple STUPID",
+    excerpt: "Las empresas exitosas no se hacen agregando cosas nuevas constantemente, sino haciendo más de lo que ya hacen bien, y menos de lo demás.",
+    body: `Este no lo escribí yo pero me gustó mucho que lo posteé en mi feed de LinkedIn.
+
+Las empresas exitosas no se hacen agregando cosas nuevas constantemente, sino haciendo más de lo que ya hacen bien, y menos de lo demás."
+
+Literalmente me lo dijo así: "Keep It Simple STUPID"
+
+Me explicó que el gran peligro de los emprendedores es que somos tan creativos, que siempre estamos persiguiendo el nuevo gadget, la siguiente idea brillante, o la oportunidad más innovadora del mercado.
+
+Claro, ¡es lo más divertido!
+
+¿El problema con esto?
+
+Nos distraemos. Creamos complicaciones. Nos alejamos de lo que nos hizo crecer desde un inicio.
+
+Cada cosa nueva empieza en negativo… Consume tiempo, dinero y energía antes de generar valor real.
+
+La verdadera escala viene cuando simplificas, perfeccionas y multiplicas aquello que ya está funcionando.
+
+Así que hazte esta pregunta con total sinceridad: ¿Qué sobra en tu negocio hoy mismo?
+
+Identifícalo. Elimínalo, sin miedo. Duplica tu atención en lo que ya haces increíblemente bien.
+
+Recuerda: Menos es la clave. Simple siempre gana.`
+  },
+  {
+    id: 15,
+    tag: "Estrategia",
+    title: "¿Por qué Costco tendría una casa de cambio dentro de la tienda?",
+    excerpt: "Están aprovechando el efectivo que manejan. Ese dinero que sube por las tuberías de cada caja registradora, cada segundo.",
+    body: `Mirando una noticia en Instagram se me ocurrió una idea.
+
+Bueno, más bien fue una pregunta: ¿por qué Costco tendría una casa de cambio dentro de la tienda?
+
+En la publicación decía que era la sucursal de Chula Vista, en San Diego, pegado a la frontera con Tijuana. Pero aún así, ¿por qué?
+
+Pasé todo el día con esa pregunta en la cabeza, conectando ideas, y llegué a una posible respuesta: simplemente están aprovechando el efectivo que manejan. Ese dinero que sube por las tuberías de cada caja registradora, cada segundo.
+
+Me pareció muy interesante pensar en esa perspectiva: observar los flujos, el entorno, y descubrir que ahí mismo existe una oportunidad.
+
+Yo, cada que noto una nueva forma de ver un negocio, lo convierto mentalmente en un modelo. Por ejemplo, si estoy dentro de un restaurante, lo primero que me pregunto es: ¿qué están haciendo con su flujo de efectivo?`
+  },
+  {
+    id: 16,
+    tag: "Estrategia",
+    title: "Lo contrario de una gran idea también puede ser una gran idea",
+    excerpt: "¿Qué pasaría si Costco le vende el queso a su propio deli más caro? Tal vez el trabajo del deli no es conseguir insumos baratos, sino construir una fórmula de volumen.",
+    body: `Estaba haciendo fila en el deli de Costco cuando me llegó una pregunta a la cabeza:
+
+¿Por qué la comida del deli está tan buena y tan barata?
+
+¿Será que el deli no busca ganancias (o solo ganancias mínimas) para cubrir sus costos operativos?
+
+¿Será que la intención real es mover inventario rápido… y la única forma de hacerlo es con precios demasiado atractivos?
+
+Entonces pensé: ¿y si la tienda Costco le está vendiendo el queso para la pizza al deli a un precio más alto?
+
+Por ejemplo: si normalmente una bolsa de queso cuesta 200 pesos en una distribuidora, ¿y si Costco le vende esa misma bolsa a su propio deli en 300?
+
+Tal vez el trabajo del deli no es conseguir los insumos al mejor precio, sino construir una fórmula donde esos costos (aunque sean altos) se compensen al ofrecer un precio final tan bueno que la gente quiera ir a desayunar, comer o cenar ahí.
+
+No sé si esto sea verdad. Lo estoy recreando en mi mente. Pero… ¿quién más está operando con este tipo de lógica?
+
+Porque cuando alguien quiere abrir un restaurante, normalmente piensa en esta cadena clásica: el productor saca el producto al mejor costo posible, el distribuidor compra al productor y le sube el precio para ganar, el restaurante compra al distribuidor y también sube su margen. Este modelo te pone a competir con todos los demás.
+
+Pero creo que Costco le dio la vuelta al juego: el que más gana es el productor… y todo lo demás está al servicio de mover volumen, generar visitas, crear fidelidad.
+
+Escuché una frase de Rory Sutherland que dice: "Lo contrario de una gran idea también puede ser una gran idea."
+
+Y ahora entiendo por qué los supermercados están creando sus propias marcas. Entonces me pregunto: ¿qué pasaría si las cadenas de restaurantes o delis fabricaran sus propios productos clave? ¿Sería más barata (y mejor) la comida?`
+  },
+  {
+    id: 17,
+    tag: "Innovación",
+    title: "La Disonancia Silenciosa: El Motor Invisible de la Innovación",
+    excerpt: "La mayoría cree que innovar es resolver problemas evidentes. Pero muchas innovaciones exitosas solucionan una incomodidad invisible.",
+    body: `Esto que están a punto de leer ha estado rondando en mi cabeza por días y, con la ayuda de Gemini, me ha permitido entender mejor el verdadero motor de las grandes innovaciones.
+
+La Disonancia Silenciosa: El Motor Invisible de la Innovación
+
+Algo que he estado explorando y que me ha ayudado a ver la innovación de otra forma es esto: la mayoría de nosotros cree que innovar es solo resolver problemas evidentes. Pero si miramos más de cerca, se revela algo más profundo. Muchas de las innovaciones más exitosas y adoptadas globalmente no solucionan un problema visible, sino una incomodidad invisible.
+
+No son solo mejoras técnicas; son mejoras emocionales que, a su vez, impulsan la evolución tecnológica.
+
+El transporte urbano es el ejemplo perfecto de este patrón.
+
+Del Taxi al Waymo: La Evolución de la Comodidad Humana
+
+Piensa en los taxis. Resolvían la necesidad de moverte por la ciudad, claro, pero creaban otras fricciones: tenías que pararte en la calle a buscarlos, la incertidumbre sobre el trato o la seguridad, la negociación del precio y la falta de transparencia, una sensación general de vulnerabilidad.
+
+Luego llegó Uber. Su éxito no fue solo tecnológico; fue su capacidad para reducir drásticamente esa incomodidad emocional: minimizó la interacción incómoda con el conductor, eliminó la necesidad de discutir el precio, aumentó la predictibilidad y el control del usuario. El viaje, en general, se sentía más seguro y predecible.
+
+Y ahora, la siguiente frontera: Waymo. Aquí, la ausencia del conductor elimina por completo la última fricción emocional significativa: la de compartir un espacio íntimo con un desconocido.
+
+Esto es más que progreso técnico. Es una narrativa silenciosa de cómo la innovación ha ido eliminando capas de disonancia humana. Cada avance no solo mejora el servicio; nos hace sentir menos tensos, menos expuestos, menos incómodos.
+
+Aunque no suene tan "glamoroso" como "disrupción" o "tecnología de punta", es esta eliminación de la disonancia lo que realmente impulsa la adopción masiva.`
+  },
+  {
+    id: 18,
+    tag: "Personal",
+    title: "Maybe I'm not the builder. Maybe I'm the lens.",
+    excerpt: "I haven't found 'my thing.' But maybe my version of creating isn't launching a startup. Maybe it's thinking about them.",
+    body: `I came across a quote from Paul Graham that's been stuck in my head:
+
+"The very best startup ideas tend to have three things in common: they're something the founders themselves want, something they can build, and something few others realize are worth doing."
+
+It's been a few days since I read that, and it's been bugging me.
+
+Because I haven't found "my thing." I don't have a product I'm itching to build. I don't have a burning pain I want to solve. And that frustrates me.
+
+But maybe the problem is not that I'm not building.
+
+Maybe my version of creating isn't launching a startup. Maybe it's thinking about them. Finding leverage points. Seeing where a business could go next. Making mental maps that others don't see.
+
+Maybe I'm not the builder in the literal sense. Maybe I'm the lens.
+
+Is that valid? I think it is. But it still leaves me with a question: what do I want to create?`
+  },
+  {
+    id: 19,
+    tag: "Factoraje",
+    title: "Una idea para modernizar el factoraje agrícola en México",
+    excerpt: "¿Qué pasaría si, en lugar de transferir fondos, se emitiera a los clientes una tarjeta prepago con el anticipo aprobado?",
+    body: `Una idea para modernizar el factoraje agrícola en México
+
+Llevo varios años trabajando con exportadores agrícolas de México, y he notado un patrón que frena mucho el uso de servicios financieros formales:
+
+1. Deducibilidad y Facturación: La mayoría de las transacciones agrícolas en México se realizan en efectivo, los productos frescos usualmente terminan en centrales de abasto y restaurantes, donde los pagos se hacen principalmente en efectivo. Los exportadores que reciben un anticipo vía transferencia deben justificar ese ingreso con gastos deducibles, pero si pagan a sus proveedores mediante transferencia y no reciben factura, no pueden deducir ese gasto. Esto convierte todo el anticipo en ingreso gravable, lo cual desincentiva a los clientes de usar nuestros servicios.
+
+2. Restricciones con Cuentas en Dólares: Los productores individuales (personas físicas) en México no pueden abrir cuentas en dólares a menos que vivan en una zona fronteriza. Exportadores de estados como Michoacán, Jalisco o Sinaloa suelen quedar excluidos, a menos que se constituyan como persona moral.
+
+3. Riesgo Bancario: Tras una advertencia reciente del Departamento del Tesoro de EE.UU., bancos como CI Banco e Intercam han bloqueado o restringido las transferencias en dólares.
+
+La Propuesta: Tarjeta Prepago para Clientes
+
+¿Qué pasaría si, en lugar de transferir fondos, se emitiera a los clientes una tarjeta prepago (digital y/o física) con el anticipo aprobado?
+
+El anticipo se aprueba como de costumbre. En lugar de pedir datos bancarios, se asigna al cliente una tarjeta prepago. Los fondos se cargan de forma instantánea. El cliente usa la tarjeta para cubrir sus necesidades operativas diarias.
+
+Beneficios: Rapidez en acceso a fondos, menos fricción bancaria, mayor inclusión para clientes no bancarizados, escalabilidad, y potencial futuro hacia una "billetera agrícola" con seguros, compras de insumos o pagos directos a proveedores.`
+  },
+  {
+    id: 20,
+    tag: "Innovación",
+    title: "Innovar no es suficiente: hay que rediseñar el mundo donde opera la innovación",
+    excerpt: "Disney no se limitó a hacer mejores películas. Creó Disneylandia porque entendió que tienes que diseñar todo el ecosistema.",
+    body: `Hace unos días vi un documental sobre Walt Disney que me dejó pensando. Más allá de lo inspirador que fue su recorrido, me hizo reflexionar sobre lo difícil que es realmente innovar dentro de una empresa, especialmente cuando lo que estás construyendo choca con el mundo exterior.
+
+Un ejemplo concreto: imagina que estás dentro de una empresa de factoraje y desarrollas una solución para aprobar operaciones en menos de 24 horas. Le pones un nombre atractivo, rediseñas procesos internos, alineas al equipo. Todo fluye, hasta que sales al mundo real.
+
+Ahí te topas con que los clientes operan bajo reglas distintas, como la Ley PACA (que, por cierto, existe desde los años 30). Ellos ya tienen su forma de trabajar y, aunque tu solución sea rápida, no encaja con los términos y tiempos que manejan ellos. Y ahí se frena todo.
+
+Disney pasó por algo parecido. Al principio se enfocó en mejorar la producción de sus películas, pero siempre terminaba enfrentándose a los límites del sistema de distribución, de exhibición, de derechos.
+
+No fue hasta que creó Disneylandia que entendió algo poderoso: si quieres que algo funcione realmente bien, no basta con mejorar una parte. Tienes que diseñar todo el ecosistema.
+
+Y eso aplica también en los negocios. Si queremos ofrecer factoraje en menos de 24 horas, no basta con optimizar procesos internos: tenemos que repensar contratos, reglas, expectativas, y en algunos casos, hasta proponer una nueva forma de operar.
+
+Innovar no es solo crear algo nuevo. A veces es tener el coraje de rediseñar el contexto completo donde eso nuevo va a vivir.`
+  },
+  {
+    id: 21,
+    tag: "Innovación",
+    title: "El ChatGPT del Campo: Asistente Inteligente para Agricultores",
+    excerpt: "Una aplicación que funciona como consultor personal las 24 horas, con integración financiera inteligente para factoraje agrícola.",
+    body: `El ChatGPT del Campo: Asistente Inteligente para Agricultores
+
+Los agricultores enfrentan decisiones críticas a diario que impactan directamente su rentabilidad: planificación agrícola, manejo fitosanitario, gestión operativa y control financiero.
+
+La Solución: Una aplicación inteligente que funciona como consultor personal las 24 horas, capaz de ofrecer planificación integral con calendarios personalizados, diagnóstico visual de plagas mediante fotografías, cálculos precisos de costos y rendimientos, y alertas proactivas para cada etapa del ciclo productivo.
+
+La Innovación Clave: Integración Financiera Inteligente. El sistema analiza patrones de flujo de efectivo y detecta automáticamente momentos de necesidad de liquidez — períodos previos a la cosecha, retrasos en pagos de compradores, inversiones estacionales en insumos. En estos momentos críticos, la app ofrece de manera natural y contextual opciones de factoraje agrícola personalizado.
+
+Esta no es solo otra app agrícola ni otra plataforma de factoraje. Es la primera solución que combina inteligencia agronómica con inteligencia financiera, creando un ecosistema donde la tecnología, la agricultura y las finanzas se integran de manera natural.`
+  },
+  {
+    id: 22,
+    tag: "Innovación",
+    title: "Agrochat: El WhatsApp Inteligente para Transacciones Agrícolas",
+    excerpt: "Si el corazón de las operaciones está en la mensajería, ¿por qué no tener una plataforma tan simple como WhatsApp pero diseñada para la agricultura?",
+    body: `Agrochat: El WhatsApp Inteligente para Transacciones Agrícolas
+
+¿Por qué nace esta idea?
+
+Hoy, la mayoría de las transacciones agrícolas se coordinan por WhatsApp (rápido, pero desordenado) y correo electrónico (formal, pero disperso).
+
+El resultado: información fragmentada que complica procesos críticos como el factoraje agrícola.
+
+La oportunidad: Si el corazón de las operaciones está en la mensajería, ¿por qué no tener una plataforma tan simple como WhatsApp, pero diseñada para la agricultura y el financiamiento?`
+  },
+  {
+    id: 23,
+    tag: "Sistemas",
+    title: "Flywheel: el interés compuesto aplicado a la vida",
+    excerpt: "No se trata de abrir otro negocio más, sino de invertir en algo que empuje lo que ya hago para que el conjunto funcione como un sistema.",
+    body: `Viendo en YouTube el podcast de Oso Trava con Pancho González, dueño de Noticiero Milenio.
+
+En la hora 1:34 dijo algo que me amarró varias ideas que traía rondando: "Flywheel".
+
+La mencionó un par de veces, pero la última me hizo click: explicó que, aunque sus cinco comercios donde tiene inversiones parecen no tener nada que ver, en realidad sí están conectados. Uno impulsa al otro, y ese al siguiente, creando un ciclo que se retroalimenta.
+
+Ahí entendí que no se trata de abrir "otro negocio más", sino de invertir en algo que empuje lo que ya hago —en mi caso, mi trabajo y mi cosecha de chiles— para que el conjunto funcione como un sistema y genere efecto compuesto.
+
+El concepto del flywheel viene del libro From Good to Great de Jim Collins y se hizo famoso porque Jeff Bezos lo adoptó para Amazon.
+
+Pero yo llegué a este mismo punto desde otra puerta. En una entrevista escuché que Charlie Munger llamaba a Peter D. Kaufman "el hombre del win-win". Lo busqué y encontré su charla The Multidisciplinary Approach to Thinking, donde resume el mundo en tres buckets:
+
+Inorgánico (13.7 mil millones de años): la regla universal es la reciprocidad espejo.
+Biológico (3.5 mil millones de años): estímulo negativo → respuesta negativa; estímulo positivo → respuesta positiva.
+Humano (20,000 años): en sociedad pasa igual: si sonríes, te sonríen; si gruñes, te gruñen.
+
+Al unir estos tres lentes, Kaufman muestra un patrón tan simple como poderoso: avance incremental, constante y sostenido en el tiempo. Ese es el verdadero interés compuesto.
+
+Mi reflexión fue que todo necesita otros procesos alrededor para funcionar bien. El chiste no es sumar cosas al azar, sino acomodarlas para que se impulsen entre sí… hasta que el sistema camine solo.`
+  },
+  {
+    id: 24,
+    tag: "Estrategia",
+    title: "El poder invisible que hace ganar a un negocio: la certeza",
+    excerpt: "Los restaurantes de comida mexicana sobrevivieron la pandemia porque ya sabemos a qué saben. En la incertidumbre, la gente prefiere lo familiar.",
+    body: `El poder invisible que hace ganar a un negocio: la certeza
+
+Durante la pandemia del COVID yo tenía una idea muy clara en la cabeza: los restaurantes de comida mexicana iban a cerrar.
+
+¿Por qué? Porque es comida que cualquiera puede preparar en su casa. Tacos, enchiladas, quesadillas… son platillos que no necesitan alta cocina.
+
+Pero pasó exactamente lo contrario.
+
+Los restaurantes de comida mexicana sobrevivieron y eso me llamó la atención, me hizo preguntarme ¿por qué sobrevivió lo que parecía más frágil?
+
+Mi conclusión fue esta: La razón por la que sobrevivieron es porque ya sabemos a qué saben.
+
+En medio de la incertidumbre, la gente no quiere arriesgarse a algo desconocido. Prefiere lo familiar, lo que le da certeza.`
+  },
+  {
+    id: 25,
+    tag: "Psicología",
+    title: "Cómo las emociones nublan las oportunidades",
+    excerpt: "Las emociones reducen el campo visual. A veces no necesitas más información, solo quitar la emoción para ver el siguiente paso.",
+    body: `Cómo las emociones nublan las oportunidades — Según yo.
+
+Hace unos días, un amigo me contó que su ex esposa le pidió ayuda para empeñar su carro. Él tiene un contacto que presta dinero por autos, pero me lo dijo molesto: "No le voy a ayudar, me haría quedar mal con mi amigo", porque su ex le había dicho que no pensaba recuperar el carro.
+
+Le respondí: "¿Sabes que no estás viendo una oportunidad, solo porque le tienes coraje?"
+
+Si dejara el enojo a un lado, vería otra cosa: que si le platica abiertamente a su contacto lo que su ex pretende hacer, probablemente su amigo ganaría aún más, y además, la relación entre ellos se fortalecería gracias a la honestidad.
+
+Ahí pude detectar que las emociones reducen el campo visual.
+
+Y me quedé pensando… ¿A qué le estoy poniendo demasiada emoción que me impide ver una oportunidad?
+
+Pensé en una plataforma que estoy desarrollando para mostrar los cultivos disponibles en Baja California y conectar compradores directamente con el campo. Y detecté que la emoción que le estaba poniendo era miedo. Miedo a no saber cómo iba a generar dinero.
+
+Cuando entendí que era miedo lo que me detenía, me pregunté: "Si no tuviera miedo, ¿qué haría?" Y la respuesta fue simple: la vendería.
+
+A veces no necesitas más información, solo quitar la emoción para ver el siguiente paso.`
+  },
+  {
+    id: 26,
+    tag: "Innovación",
+    title: "Keep it interesting or be terminated",
+    excerpt: "Musk dijo: si el universo fuera una simulación, solo las simulaciones más interesantes seguirán corriendo. Solo lo que mantiene la atención, sobrevive.",
+    body: `Hace unos días volví a escuchar una conversación entre Elon Musk y Joe Rogan.
+
+Musk decía algo que me dejó pensando: "The most ironic outcome is the most likely, especially if entertaining."
+
+Y después explicó su teoría: Si el universo fuera una simulación, solo las simulaciones más interesantes seguirán corriendo, porque las aburridas serían apagadas.
+
+En otras palabras, el universo o la vida, tiene una especie de algoritmo darwiniano basado en el interés.
+
+Solo lo que mantiene la atención, la emoción o la curiosidad, sobrevive.`
+  },
+  {
+    id: 27,
+    tag: "Agricultura",
+    title: "Quien crea el ecosistema, crea las reglas",
+    excerpt: "Y quien crea las reglas… captura oportunidades que no existen para los demás. Lo vi con mis propios ojos en Ensenada.",
+    body: `Tengo ganas de abrir un mercado agrícola y como tengo eso muy presente en mi mente, me di cuenta de algo.
+
+Hace unos días me pasó algo que me dejó pensando. Yo le vendía producto fresco a un bróker grande de Ensenada y en cada venta siempre me mermaba cajas. Cada nota. Siempre faltaba algo.
+
+Y este sábado pasado me enteré que ese mismo bróker tiene una distribuidora para venta local en Ensenada y pensé "a mira qué inteligente."
+
+Ese mismo sábado pero más tarde, visité junto con un contacto a otro jugador del mercado: el hijo del dueño de una cadena de supermercados de Ensenada. Entramos a ver su almacén: cámaras frías, equipo de procesamiento, bodega enorme. Su discurso era ayudar al agricultor a encontrar compradores en USA.
+
+Pero luego vino la parte interesante. Nos contó que la cooperativa que quieren formar les dará acceso a toda la merma de los agricultores — la misma merma que el bróker me descontaba a mí en las notas. Esa merma ellos la venderán en sus propios supermercados.
+
+Fue ahí donde entendí algo con mucha claridad: Quien crea el ecosistema, crea las reglas. Y quien crea las reglas… captura oportunidades que no existen para los demás.`
+  },
+  {
+    id: 28,
+    tag: "Agricultura",
+    title: "La relación entre cultivos y festividades del mercado de exportación",
+    excerpt: "Tal vez al menos una parte de las siembras debería pensarse en función del calendario de festividades de Estados Unidos.",
+    body: `Llevo días recorriendo cultivos, haciendo un tipo de inventario de hortalizas y hierbas frescas en la zona de Ensenada.
+
+Con casi todos los agricultores con los que he platicado me dicen lo mismo: tienen espacio para sembrar, pero no saben qué más poner. Algunos incluso me piden consejo sobre qué sería bueno sembrar… y la verdad es que está canijo aconsejar.
+
+Pero hoy pude notar algo muy obvio. Un comprador de hierbas frescas me pidió romero y le hablé a un agricultor que tiene, pero me dijo que ya lo tenía prácticamente comprometido.
+
+¿Por qué? Porque acaba de pasar el Día del Pavo y ya viene Navidad, y la demanda de romero se disparó. No podía quedar mal con sus compradores frecuentes.
+
+Eso me dejó pensando. Si eres agricultor enfocado en exportación, tal vez no basta con sembrar solo por clima o por costumbre. Tal vez al menos una parte de las siembras debería pensarse en función del calendario de festividades de Estados Unidos.
+
+La verdad es que nunca había pensado en esa relación entre los cultivos y las festividades del mercado al que exportamos. Ahora ya sé qué responder.`
+  },
+  {
+    id: 29,
+    tag: "Psicología",
+    title: "Las relaciones de negocio no fallan por números, fallan por silencios",
+    excerpt: "No puedes ser justo con alguien si no sabes qué le pesa realmente. Y nadie tiene por qué adivinar lo que no se dice.",
+    body: `Las relaciones de negocio no fallan por números, fallan por silencios.
+
+Y hace unos días me di cuenta de un punto crítico. Siempre se dice que es importante entender las necesidades del cliente para no quedar mal. Pero creo que la palabra correcta no siempre es necesidades… sino expectativas no explícitas.
+
+Te pongo un ejemplo personal. Yo soy quien negocia, compra y vende. Trabajo con un compañero que se encarga de toda la logística. Cuando llega el momento de repartir ganancias, a mí se me hace difícil dividirlas 50/50. No porque no quiera ser justo, sino porque, si soy honesto, hay una parte de mí que quisiera quedarse con todo el pastel.
+
+No soy perfecto. Soy humano.
+
+Un día se lo dije tal cual: que si él quería, podía meter parte de su dinero en algunas compras, para que a mí no se me hiciera tan pesado repartir las ganancias después. Que eso me ayudaría mucho a nivel mental.
+
+En ese momento pensé algo interesante: yo, en este caso, soy el cliente. Y una parte de mí sentía que él "debió haber pensado eso por mí". Pero ahí está el punto.
+
+No puedes ser justo con alguien si no sabes qué le pesa realmente. Y nadie tiene por qué adivinar lo que no se dice.
+
+Muchas relaciones de negocio se rompen no por mala intención, sino porque operan sobre suposiciones. Creemos que estamos siendo justos, cuando en realidad estamos ignorando expectativas que nunca se pusieron sobre la mesa.
+
+Hoy tengo más claro que una buena relación no se basa en quedar bien, sino en hablar a tiempo de lo que INCOMODA. Porque cuando las expectativas no son explícitas, tarde o temprano pasan factura.`
+  },
+  {
+    id: 30,
+    tag: "Estrategia",
+    title: "Adelanta la propina: alinear incentivos desde el inicio",
+    excerpt: "No se trata de manipular, sino de alinear incentivos desde el inicio, para que la relación no dependa del humor de la otra parte.",
+    body: `Uno de los mejores consejos que me han dado, yo que me dedico a manejar relaciones comerciales, fue este:
+
+Cuando vayas a una fiesta, como una boda, y tengas un mesero asignado, no esperes a que termine la noche para ver qué propina le vas a dar o no. Mejor, en cuanto se presente, adelántale la propina. Verás cómo cambia el trato.
+
+Ese consejo me ha ayudado mucho más allá de una fiesta.
+
+Porque ese mesero pudo haber tenido un mal día, puede estar distraído o de malas y eso son asuntos de él. Pero si tú quieres que eso no te afecte, hay formas de protegerte.
+
+En las relaciones comerciales pasa lo mismo. No se trata de manipular, sino de alinear incentivos desde el inicio, para que la relación no dependa del humor, del cansancio o de la buena intención de la otra parte.
+
+Puede sonar egoísta, pero en realidad es una forma de cuidar la relación y cuidarte a ti también.`
+  },
+  {
+    id: 31,
+    tag: "Sistemas",
+    title: "El conflicto no desaparece porque lo evites. Solo se acumula.",
+    excerpt: "Para llegar a puestos altos, la mayoría tuvo que ser buen estudiante y no ser conflictivo. El problema es que te haces muy bueno para evadir el conflicto.",
+    body: `Cuando trabajaba en una empresa en crecimiento, en mi primer rol formal de oficina, después de un tiempo empecé a notar algo.
+
+Muchos de los problemas que tenía la empresa no venían del mercado, ni de la estrategia, ni del producto. Venían de algo más básico: había personas que no sabían lidiar con el conflicto.
+
+Con el tiempo armé una hipótesis. Para llegar a ese tipo de puestos, la mayoría tuvo que ser buen estudiante, construir una buena carrera profesional, portarse bien, cumplir reglas, no ser conflictivo.
+
+Y eso no es fácil. Al contrario, requiere mucha disciplina.
+
+El problema es que, con los años, te haces muy bueno para evadir el conflicto.
+
+Y en una empresa real, el conflicto no desaparece porque lo evites. Solo se acumula.
+
+No todo desacuerdo es un problema. Muchas veces es información que nadie se atreve a decir.
+
+Y cuando una organización no sabe manejar el conflicto, termina tomando decisiones cada vez más suaves, hasta que la realidad las vuelve duras.`
+  },
+  {
+    id: 32,
+    tag: "Personal",
+    title: "Tengo 42 años y acabo de darme cuenta de algo",
+    excerpt: "La incertidumbre. No me había dado cuenta de que estaba en incertidumbre. Mi cerebro lo etiquetaba como: algo estoy haciendo mal.",
+    body: `Tengo 42 años y acabo de darme cuenta de algo.
+
+Estoy en un momento de estrés porque algo está tomando más tiempo de lo necesario. Pero hablando con otras personas igual que yo, pude ver un patrón.
+
+Cuando tenía 18 años paré de jugar fútbol. Empecé relativamente tarde, como a los 12, pero a los 18 era muy bueno. Mi último equipo fue en el colegio, llegué a jugar en el estadio de San Diego y mi momento más grande fue jugar un partido antes de la selección mexicana.
+
+Al mismo tiempo tuve la oportunidad de jugar en segunda división con los San Diego Sockers, pero no lo hice. Era delantero… y no podía meter gol. Estar frente a la portería se volvió un problema mental. Mi cabeza no pensaba en cómo meterlo, sino en todas las formas en las que lo iba a fallar.
+
+Hoy, a mis 42 años se está repitiendo el patrón. Tengo mucha experiencia en el comercio agrícola, pero estoy en un momento de transición que está tomando más tiempo del que esperaba.
+
+Y ahí está el patrón: la incertidumbre.
+
+Pero aquí viene lo interesante: no me había dado cuenta de que estaba en incertidumbre. Lo que realmente estaba pasando es que ya no dependía solo de mí, sino de otros factores y de otras personas.
+
+Pero como eso no es visible, el cerebro no lo etiqueta como "esto está fuera de mi control". Lo etiqueta como: algo estoy haciendo mal.
+
+Ahí es donde empiezas a dudar de ti.
+
+Así que mi recomendación es: si estás dudando de ti, piensa si realmente es por ti o por otros factores de los cuales no tienes el control.`
+  },
+  {
+    id: 33,
+    tag: "Estrategia",
+    title: "El mejor comercio empieza al revés",
+    excerpt: "Primero encuentras a alguien que ya quiere comprar. El producto ya está vendido. Lo único que falta es ir a buscarlo, comprarlo y entregarlo.",
+    body: `Durante años en la compraventa de hortalizas aprendí algo valioso.
+
+El mejor comercio no empieza comprando para luego vender. Empieza al revés.
+
+Primero encuentras a alguien que ya quiere comprar. El producto ya está vendido. Lo único que falta es ir a buscarlo, comprarlo y entregarlo.
+
+Cuando operas así: el inventario deja de ser riesgo, el capital necesario se reduce al mínimo, el negocio no especula, ejecuta. La transacción nace desde la demanda, no desde la oferta.
+
+Peter Thiel dice en Zero to One: "Design distribution into the product." La distribución no es marketing, es parte del diseño del negocio.
+
+Y con el tiempo empecé a notar algo más: los grandes fundadores hacen exactamente lo mismo… pero con el financiamiento.
+
+Richard Branson no "levantó capital" para su aerolínea. Leaseó un avión y prevendió boletos para financiarla.
+
+Elon Musk: En PayPal, diseñó tarjeta de crédito para forzar adopción. En SolarCity, eliminó el costo inicial usando financiamiento embebido. En Tesla, los clientes dejaron depósitos antes de que existiera el producto. En SpaceX, creó Starlink para financiar un negocio aún más caro.
+
+El patrón es claro: no diseñan solo el producto. Diseñan la distribución y el flujo de dinero desde el día uno.
+
+Esto me pega personalmente porque no vengo de capital, pero sí de una obsesión por entender cómo funcionan los negocios de verdad.`
+  },
+  {
+    id: 34,
+    tag: "Sistemas",
+    title: "Mi principio: estructurar confianza",
+    excerpt: "En agricultura muchas transacciones no fallan por falta de capacidad. Fallan por fricción humana innecesaria.",
+    body: `En agricultura aprendí algo que después me costó dejar de ver.
+
+Muchas transacciones no fallan por falta de capacidad. Fallan por fricción humana innecesaria.
+
+Hay producto. Hay demanda. Hay precio justo. Y aun así, no sucede.
+
+No porque sea difícil de ejecutar, sino porque alguien desconfía, interpreta de más o introduce ruido donde no lo hay.
+
+Con el tiempo entendí que eso no era exclusivo del campo. Era un patrón que se repite entre personas.
+
+Escuchar Inventing on Principle, de Bret Victor, me hizo preguntarme qué era lo que realmente me molestaba en cualquier contexto. Me di cuenta que es cuando las cosas se sobrecomplican sin necesidad.
+
+De ahí surgió mi Inventing by Principle: estructurar confianza.
+
+Y es genial porque me hace ver donde la fricción es artificial y me hace ver oportunidades que se necesita estructurar confianza para que las cosas sucedan.`
+  },
+  {
+    id: 35,
+    tag: "Estrategia",
+    title: "El promedio no importa: diseñar para el outlier",
+    excerpt: "Ilia Topuria, Ronaldo Nazário, venture capital, editoriales — todos buscan lo mismo: el resultado extremo que pesa más que cien intentos normales.",
+    body: `Últimamente he estado viendo el mismo patrón en lugares muy distintos.
+
+Ilia Topuria lo explicó sin usar palabras técnicas. Él no entrena solo para tener condición o técnica. Entrena para ser explosivo. Para noquear. Para terminar la pelea. No busca ganar por puntos. Busca resultados extremos.
+
+Pensé en Ronaldo Nazário. Su forma de jugar no era conservadora. Podía haber cinco defensas y aun así intentaba pasar. Si fallaba, no pasaba nada. Si funcionaba, era inolvidable.
+
+Luego vi un video de Veritasium sobre power laws y todo empezó a hacer sentido. En muchos sistemas reales, el promedio no importa. Un solo resultado puede pesar más que cien intentos normales.
+
+Por eso los fondos de venture capital hacen cientos de apuestas. Por eso las editoriales publican miles de libros. Por eso programas como American Idol audicionan a multitudes. No están buscando consistencia. Están diseñados para encontrar outliers.
+
+Curiosamente, eso mismo lo he vivido en la compraventa de hortalizas. Durante un año entero, una o dos transacciones pueden generar más que todas las demás juntas.
+
+Visto así, diseñar una oportunidad no es buscar el mejor promedio. Es elegir: multiplicar los intentos hasta que aparezca el outlier, o diseñar cada intento desde el inicio para ir por el resultado extremo.`
+  },
+  {
+    id: 36,
+    tag: "Factoraje",
+    title: "La falacia del buen negociador en servicios profesionales",
+    excerpt: "Nadie preguntaba: ¿Qué necesito para ser tu prioridad? Esa pregunta cambia el juego completamente.",
+    body: `Trabajar en una empresa de factoraje me dio la oportunidad de conocer empresas agrícolas muy grandes que, por el tamaño del negocio, obtenían comisiones preferenciales.
+
+Pero también llegaban empresas chicas y medianas que negociaban exactamente lo mismo, una comisión más baja, y pasaba que la relación comercial se inclinaba tanto a favor del cliente que los números dejaban de funcionar. Al poco tiempo, la relación terminaba.
+
+Esto me hizo pensar en la falacia del "buen negociador".
+
+Cuando negocias servicios profesionales, no solo pagas por el servicio, pagas por: prioridad cuando hay recursos limitados, que te asignen al equipo A y no al B, que cuando haya conflicto de intereses TÚ ganes. Todo eso se pierde cuando solo negocias una comisión más baja.
+
+Lo interesante es que nadie preguntaba: ¿Qué necesito para ser tu prioridad?
+
+Imagina que alguien hubiera llegado y dicho: No me interesa la comisión más baja. Me interesa ser tu cliente #1. ¿Qué necesito hacer?
+
+Ese cliente habría obtenido: fondeo en horas (no días), atención del socio (no del analista), flexibilidad en casos especiales, prioridad absoluta cuando hay recursos limitados.
+
+Porque los servicios profesionales son GENÉRICOS por default. Pero cuando llegas y preguntas "¿Qué necesito para ser tu cliente #1?", estás co-diseñando el servicio que TÚ necesitas.
+
+Maximiza resultados, no descuentos.`
+  },
+  {
+    id: 37,
+    tag: "Innovación",
+    title: "¿Por qué la disonancia impulsa la innovación?",
+    excerpt: "Nuestro cerebro consume ~20% de nuestra energía total. Cada incomodidad es gasto energético real. La innovación que elimina disonancia es termodinámicamente superior.",
+    body: `¿Por Qué la Disonancia Impulsa la Innovación?
+
+No es coincidencia. Hay una razón física:
+
+Nuestro cerebro consume ~20% de nuestra energía total. Cada incomodidad —ansiedad sobre el taxi, tensión con el conductor, incertidumbre sobre el precio— es gasto energético real. No es solo "sentirse mal"; son calorías quemadas en procesamiento mental.
+
+Los sistemas biológicos evolucionaron para minimizar gasto energético innecesario. Por eso preferimos el camino más corto, creamos hábitos (para no decidir cada vez), y adoptamos herramientas que reducen esfuerzo mental.
+
+La innovación que elimina disonancia no es solo "nice to have" — es termodinámicamente superior. Es más eficiente energéticamente. Y en mercados competitivos, la eficiencia siempre gana.
+
+Por eso Uber no solo "mejoró" el taxi. Creó un sistema que requiere menos energía total (mental + emocional + física) para lograr el mismo resultado. Y Waymo reduce aún más esa energía eliminando la última fricción: la interacción humana.
+
+Esta no es evolución tecnológica arbitraria. Es física básica aplicada al comportamiento humano.
+
+El Patrón Unificado: Fricción → Flujo → Control → Riqueza`
+  },
+  {
+    id: 38,
+    tag: "Sistemas",
+    title: "El poder de crear problemas (y lo que revela sobre el poder real)",
+    excerpt: "En México, para ser un buen político, no hace falta saber resolver los problemas, hay que saber crearlos.",
+    body: `Escuché algo en un podcast que me hizo detenerme en seco:
+
+"En México, para ser un buen político, no hace falta saber resolver los problemas, hay que saber crearlos. El que crea el problema es el único que lo puede resolver."
+
+Brutal. Pero esto no es solo política mexicana — describe una mecánica de poder que existe en todos lados.
+
+Existe un espectro. En un extremo: el político que crea complejidad artificial para volverse indispensable. En el otro: empresas como Amazon o Stripe, que eliminaron problemas que ellas no crearon. Su poder vino de crear valor genuino.
+
+Pero hay un punto medio gris que pocos nombran: Apple diseñó el App Store para ser el intermediario forzoso. Visa/Mastercard construyeron una red donde todos dependen de ellos. Muchos distribuidores agrícolas diseñan el sistema para que productores y retailers no puedan conectarse sin ellos.
+
+¿El problema era real? Sí. ¿Pero lo resolvieron de la forma más eficiente? No. Lo resolvieron de la forma que maximizaba su control.
+
+Cuando construyes un negocio, estás en este espectro: Tu poder puede venir de crear valor — y los clientes te eligen porque eres mejor. O puede venir de crear dependencia estructural — y los clientes te usan porque diseñaste el sistema para que no tengan opción.
+
+La próxima vez que veas un sistema innecesariamente complejo, hazte esta pregunta: ¿Es complejo porque el problema es difícil... o porque alguien diseñó el sistema para ser indispensable?`
+  },
+  {
+    id: 39,
+    tag: "Estrategia",
+    title: "Capital a Costo Cero",
+    excerpt: "Los mejores negocios no crecieron gracias al capital externo. Crecieron porque diseñaron sistemas donde el cliente paga antes de que el costo exista.",
+    body: `Capital a Costo Cero: el principio que separa los negocios ordinarios de los extraordinarios.
+
+Llevo meses obsesionado con un patrón que se repite en los mejores negocios del mundo.
+
+No importa la industria. No importa el tamaño. No importa la época.
+
+Los mejores negocios no crecieron gracias al capital externo. Crecieron porque diseñaron sistemas donde el cliente paga antes de que el costo exista.
+
+No es deuda. No cedes equity. No debes rendimiento a nadie.
+
+Es dinero que entra por la operación normal del negocio, pero antes de tiempo.`
+  },
+  {
+    id: 40,
+    tag: "Sistemas",
+    title: "Todo está conectado — y eso lo cambia todo",
+    excerpt: "Los problemas en una capa no se resuelven con soluciones de esa misma capa. Un cliente que no paga puede ser un problema económico, sociológico o psicológico.",
+    body: `Todo está conectado — y eso lo cambia todo
+
+Existe una jerarquía en cómo funciona la realidad.
+
+La física define las reglas más básicas. La química agrega estructura. La biología agrega auto-mantenimiento y feedback loops. La psicología agrega percepción y experiencia subjetiva. La sociología agrega normas y poder compartido. La economía agrega escasez e incentivos. La política agrega autoridad y legitimidad. El arte agrega expresión simbólica. La filosofía es cuando el ser humano se detiene y examina las reglas del juego antes de decidir si quiere jugar.
+
+No son campos separados. Cada uno construye sobre el anterior.
+
+El insight más importante: Los problemas en una capa no se resuelven con soluciones de esa misma capa.
+
+Un cliente que no paga puede ser un problema económico (no tiene dinero), sociológico (no confía), psicológico (su modelo mental normaliza retrasar pagos), o biológico (está en modo supervivencia). La respuesta correcta depende de identificar cuál capa está rota.
+
+Un buen sistema — negocio, relación, organización — es uno donde las capas están alineadas y hablando entre sí. Cuando algo no funciona, la pregunta no es "¿qué está mal?" sino "¿qué capa está rota y está presionando a las demás?"`
+  },
+  {
+    id: 41,
+    tag: "Estrategia",
+    title: "La receta para tu propio hack de marketing",
+    excerpt: "Crea un feature que provoque conversación y un flujo constante de datos que los medios puedan reutilizar. Al estilo de Zillow.",
+    body: `La receta para tu propio "hack" de marketing
+
+Si tu objetivo es ganar exposición orgánica y sostenible, el modelo es simple: crea un feature que provoque conversación y un flujo constante de datos que los medios puedan reutilizar. Al estilo de Zillow, construyes tu propio infinite news hole y conviertes tu expertise en la historia que todos querrán contar.
+
+Cómo ejecutarlo en cuatro pasos:
+
+Primero, identifica tu feature provocativa — una estadística o funcionalidad que ponga al público a opinar. Segundo, construye tu canal de datos reuniendo métricas en tiempo real que importen a tu audiencia: ventas, precios, rendimiento. Tercero, automatiza la distribución con un script o conexión API que envíe esos datos a newsletters, blogs o medios locales. Cuarto, cierra el círculo usando la cobertura obtenida para alimentar tus redes y tu blog, amplificando el eco.
+
+El resultado: crecimiento sin ads, autoridad de marca como fuente experta en tu nicho, y un efecto multiplicador donde cada medio reproduce tu contenido con mínimo esfuerzo adicional.`
+  },
+  {
+    id: 42,
+    tag: "Sistemas",
+    title: "El principio que nadie te dice en el trabajo",
+    excerpt: "No asciende el que más trabaja. Asciende el que mejor controla el estrés de quien toma decisiones.",
+    body: `El principio que nadie te dice en el trabajo
+
+No asciende el que más trabaja. Asciende el que mejor controla el estrés de quien toma decisiones.
+
+Para triunfar en cualquier organización necesitas tres cosas simultáneamente: entender cómo funciona realmente el sistema, ser muy bueno en tu área, y saber moverte dentro del sistema. La mayoría solo trabaja en la segunda.
+
+Las cinco jugadas de los que realmente avanzan:
+
+Controlar la llave del agua. Vuélvete el único que maneja una relación o proceso crítico.
+
+Crear deuda emocional. Resuelve problemas de otras áreas en silencio, sin cobrar favores públicamente.
+
+Resolver lo que nadie quiere tocar. El problema que todos evitan es tu oportunidad.
+
+Saber antes que los demás. Habla con bodegueros, repartidores, proveedores pequeños. Quien controla información, controla narrativa.
+
+Convertir lo invisible en sistema propio. Documenta lo que aprendes. Tu inteligencia acumulada es tuya, no de la empresa.
+
+El principio detrás de todo: No eres empleado. Eres dueño de un dolor resuelto.`
+  },
+  {
+    id: 43,
+    tag: "Psicología",
+    title: "Mi patrón cuando algo me molesta",
+    excerpt: "El enojo no es el problema. Es el disparador. Lo uso para investigar qué está pasando realmente y encontrar cómo darle la vuelta.",
+    body: `Mi patrón cuando algo me molesta
+
+El enojo no es el problema. Es el disparador.
+
+Cuando algo me traba o me saca de quicio, hay un proceso que ocurre casi automáticamente. Primero la molestia — algo no está bien y lo siento antes de entenderlo. Luego, en lugar de quedarme en el coraje, me pongo a analizar: ¿quién está detrás de esto y por qué? ¿Qué intención hay? ¿Qué falla revela?
+
+De ahí casi siempre sale algo útil.
+
+Un ejemplo concreto: una tabla de Excel me trabó el avance en un proyecto. La reacción inmediata fue frustración. Pero al día siguiente me pregunté quién la había diseñado así y con qué propósito — y llegué a que era una jugada para volverse indispensable. Alguien había metido complejidad artificial para que nadie más pudiera operar sin él.
+
+El enojo se convirtió en una lectura de intenciones. Y esa lectura se convirtió en un insight más grande: meter sistemas que solo tú controlas puede ser una estrategia deliberada de poder dentro de una organización.
+
+El patrón resumido: cuando me enojo, lo uso para investigar qué está pasando realmente, entender las intenciones o fallas detrás, y encontrar cómo darle la vuelta a mi favor.
+
+El enojo como herramienta de análisis, no como reacción.`
+  },
+  {
+    id: 44,
+    tag: "Sistemas",
+    title: "Un sistema financiero basado en la naturaleza",
+    excerpt: "Los ecosistemas más resilientes comparten tres principios: se adaptan, no dependen de una sola fuente, y tienen amortiguadores.",
+    body: `Un sistema financiero basado en la naturaleza
+
+Los ecosistemas más resilientes comparten tres principios: se adaptan, no dependen de una sola fuente, y tienen amortiguadores. Las finanzas personales y de negocio funcionan igual.
+
+Adaptabilidad. Nunca dependas de un solo ingreso. Mantén múltiples fuentes que puedan cambiar según las circunstancias. La ventaja competitiva está en reaccionar antes que otros.
+
+Diversidad. Distribuye tus recursos con una regla simple: 70% en lo que ya funciona y tiene alta rotación, 20% en nuevos canales o productos, 10% en experimentos que podrían tener grandes retornos.
+
+Redundancia. Ten siempre un colchón que cubra 3 a 6 meses de gastos. Mantén proveedores alternativos. Mantén bajos tus costos fijos para poder absorber caídas temporales.
+
+El principio detrás de todo: un sistema financiero sano no es el que maximiza en tiempos buenos — es el que sobrevive los tiempos malos y sigue funcionando.`
+  },
+  {
+    id: 45,
+    tag: "Estrategia",
+    title: "Piensa como Joe Lonsdale",
+    excerpt: "¿Quién le paga a quién aquí? ¿Quién controla la puerta de entrada al sistema? ¿Cómo gana dinero el que parece no estar ganando nada?",
+    body: `¿Cómo lo aplicas tú Oscar?
+
+La próxima vez que veas cualquier negocio, servicio, aplicación o sistema...
+
+No pienses como usuario. Piensa como Joe Lonsdale.
+
+Pregúntate:
+
+1. ¿Quién le paga a quién aquí?
+2. ¿Por qué le paga?
+3. ¿Quién gana si esto es más caro?
+4. ¿Quién pierde si esto es más barato?
+5. ¿Quién controla la puerta de entrada al sistema?
+6. ¿Cómo gana dinero el que parece no estar ganando nada?
+7. ¿Qué regla rota o absurda mantiene esto funcionando así?`
+  },
+  {
+    id: 46,
+    tag: "Sistemas",
+    title: "Antes de buscar una oportunidad, cambia la pregunta",
+    excerpt: "No preguntes qué producto puedes vender. Pregúntate qué es estructuralmente inevitable.",
+    body: `Antes de buscar una oportunidad, cambia la pregunta.
+
+No preguntes qué producto puedes vender ni qué tendencia está creciendo; pregúntate qué es estructuralmente inevitable. Las oportunidades más grandes no nacen de convencer a otros, sino de entender qué necesita el sistema para seguir funcionando y cómo conectar esas necesidades en una arquitectura donde el comportamiento correcto sea automático.
+
+Un ejemplo histórico lo ilustra bien: tras perder el respaldo en oro, Estados Unidos —con Henry Kissinger como arquitecto estratégico— vinculó el dólar al petróleo mediante un acuerdo con Arabia Saudita que intercambiaba seguridad militar por ventas de crudo en dólares, logrando que el mundo necesitara dólares simplemente porque necesitaba energía.
+
+El principio práctico es este: filtra oportunidades preguntándote qué es indispensable, dónde se liquida realmente, qué actor necesita algo existencial y cómo puedes conectar esas necesidades en una estructura donde el comportamiento correcto emerja solo.`
+  },
+  {
+    id: 47,
+    tag: "Factoraje",
+    title: "¿Por qué la agroindustria no confía en el factoraje?",
+    excerpt: "Lo irónico es que hay escasez de capital en la agroindustria y al mismo tiempo exceso de capital buscando dónde invertir. Dos lados que se necesitan y no se encuentran.",
+    body: `Tengo ojo para identificar fricciones en los negocios. Y en el factoraje esto es lo que estoy mirando.
+
+¿Por qué la agroindustria no confía en el factoraje?
+
+Lo irónico es que hay escasez de capital en la agroindustria y al mismo tiempo exceso de capital buscando dónde invertir. Dos lados que se necesitan y no se encuentran.
+
+Trabajé en el sector y lo vi de cerca. El problema no es la tasa, no es la documentación, no es el proceso. El problema es el contrato.
+
+Cuando algo sale mal, el exportador descubre que firmó algo que no entendía del todo, y de repente tiene abogados interpretando cláusulas que siempre favorecen a la financiera. Eso no es paranoia. Es experiencia real que se pasa de productor en productor.
+
+Y el miedo tiene fundamento. Con el factoraje el exportador cede el control de su factura, de su relación con su comprador, a veces hasta de su operación. Pero el comprador también lo siente, porque cuando algo falla, la deuda llega a sus manos.
+
+Detrás de la financiera normalmente hay inversionistas que solo entienden números, y abogados que traducen esos números en contratos construidos sobre la Ley PACA, el Bluebook, y cualquier otro marco que todos usan por costumbre.
+
+Para innovar de verdad, no basta con crear un nuevo producto. Hay que construir el ecosistema completo. La diferencia está en por dónde empiezas. Los inversionistas empiezan con números. Yo empezaría con el cliente.`
+  },
+  {
+    id: 48,
+    tag: "Factoraje",
+    title: "Por qué las empresas de factoraje agrícola no tienen clientes",
+    excerpt: "Quieren escalar con plataformas digitales, pero no tienen clientes. Porque olvidaron cómo funciona el mundo real.",
+    body: `Por qué las empresas de factoraje agrícola no tienen clientes
+
+Las empresas de factoraje quieren escalar. Es lo que les piden sus inversionistas. Entonces diseñan contratos, procesos digitales, plataformas, firmas electrónicas. Todo se ve moderno. Todo simula escalabilidad. Pero no tienen clientes.
+
+¿Por qué?
+
+Porque olvidaron cómo funciona el mundo real. En el comercio agrícola, una transacción es simple: el agricultor tiene producto, el comprador lo quiere, alguien lo mueve. La caja lleva una etiqueta con el nombre de quien vende.
+
+Ahora llega la empresa de factoraje y dice: "Te vamos a adelantar dinero." Bien. Pero para hacerlo te piden firmar un contrato que el comprador nunca ha visto, con términos que no entiende, con un proceso que le agrega trabajo en vez de quitarle. El comprador ve eso y dice: "Esto me complica la vida." Y se va.
+
+La solución es más simple de lo que parece. Si la empresa de factoraje se diera de alta como proveedor del comprador, si la etiqueta de la caja llevara su nombre, si el invoice fuera a su nombre — el comprador no tendría que cambiar nada.
+
+Pero eso requiere algo que las factorajes no quieren hacer: meterse en la operación real. Prefieren quedarse detrás de un contrato y una plataforma digital porque eso "escala." Pero no escala si no tienes clientes.
+
+Innovar no es digitalizar lo que ya existe. A veces es tener el coraje de operar como el mercado ya funciona, solo que mejor.`
+  },
+  {
+    id: 49,
+    tag: "Estrategia",
+    title: "Cómo Elon Musk hizo crecer cada una de sus empresas",
+    excerpt: "En todas sus empresas, Musk hace lo mismo: identifica qué le impide al cliente dar el primer paso, y luego encuentra a alguien más que facilite esa entrada.",
+    body: `Cómo Elon Musk hizo crecer cada una de sus empresas — PayPal, Tesla, SolarCity, SpaceX, Starlink — y noté algo que se repite en todas.
+
+No tiene que ver con su visión ni con su liderazgo. Tiene que ver con algo mucho más básico que nadie desarma.
+
+En todas sus empresas, Musk hace lo mismo: identifica qué le impide al cliente dar el primer paso, y luego encuentra a alguien más — alguien que tiene su propio incentivo — para que facilite esa entrada.
+
+En PayPal, nadie confiaba en mandar dinero por internet. Entonces regaló $20 por abrir cuenta. Pero esos $20 no salieron de él. Salieron de los inversionistas y de un banco llamado Providian que quería nuevos clientes para sus tarjetas.
+
+En SolarCity, nadie iba a pagar $20,000 por paneles solares. Entonces eliminó el costo inicial por completo — instalación gratis, $0 de enganche. ¿Quién lo hizo posible? Goldman Sachs, que puso $500 millones porque se quedaba con un crédito fiscal del 30%.
+
+En SpaceX, nadie iba a comprar lanzamientos de una empresa que todavía no llegaba al espacio. Entonces fue con NASA, que necesitaba lanzamientos más baratos.
+
+En Tesla, necesitaba construir una fábrica. El Departamento de Energía le prestó $465 millones a tasa baja porque quería impulsar vehículos eléctricos.
+
+En Starlink, la antena costaba más de $500 y eso frenaba todo. SpaceX decidió venderla a pérdida porque cada cliente nuevo paga una suscripción mensual que vale mucho más a largo plazo.
+
+Lo que me parece interesante es que Musk nunca está solo empujando la adopción. Siempre hay alguien más en la ecuación que también gana cuando el cliente entra.
+
+La parte difícil de cualquier negocio no es tener un buen producto. Es lograr que el cliente dé el primer paso. Y la forma más inteligente que he visto de resolverlo es dejar de empujar solo y preguntarte quién más gana cuando ese cliente entra.`
+  }
+];
+
+// Render essays list
+function renderEssays(filter = 'all') {
+    const container = document.getElementById('essaysList');
+    const sorted = [...essays].reverse();
+    let visible = 0;
+
+    container.innerHTML = sorted.map(e => {
+        const show = filter === 'all' || e.tag === filter;
+        if (show) visible++;
+        return `<article class="essay-item${show ? '' : ' hidden'}" data-tag="${e.tag}" onclick="openEssay(${e.id})">
+            <span class="essay-number">${e.id}</span>
+            <div class="essay-content">
+                <p class="essay-tag">${e.tag}</p>
+                <h3 class="essay-title">${e.title}</h3>
+                <p class="essay-excerpt">${e.excerpt}</p>
+            </div>
+        </article>`;
+    }).join('');
+
+    document.getElementById('essayCount').textContent = `${visible} ensayo${visible !== 1 ? 's' : ''}`;
+}
+
+// Filter
+function filterEssays(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderEssays(tag);
+}
+
+// Open essay
+function openEssay(id) {
+    const essay = essays.find(e => e.id === id);
+    if (!essay) return;
+
+    const idx = essays.findIndex(e => e.id === id);
+    const prev = idx > 0 ? essays[idx - 1] : null;
+    const next = idx < essays.length - 1 ? essays[idx + 1] : null;
+
+    const bodyHtml = essay.body.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+
+    document.getElementById('essayFull').innerHTML = `
+        <button class="essay-full-close" onclick="closeEssay()">Cerrar ✕</button>
+        <div class="essay-full-number">${essay.id}</div>
+        <p class="essay-full-tag">${essay.tag}</p>
+        <h2 class="essay-full-title">${essay.title}</h2>
+        <div class="essay-full-body">${bodyHtml}</div>
+        <div class="essay-full-nav">
+            <button ${prev ? `onclick="openEssay(${prev.id})"` : 'disabled'}>← ${prev ? 'Nº ' + prev.id : ''}</button>
+            <button ${next ? `onclick="openEssay(${next.id})"` : 'disabled'}>${next ? 'Nº ' + next.id : ''} →</button>
+        </div>
+    `;
+
+    document.getElementById('essayOverlay').classList.add('open');
+    document.getElementById('essayOverlay').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+}
+
+// Close essay
+function closeEssay() {
+    document.getElementById('essayOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeEssay();
+});
+
+// Back to top
+window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 600);
+});
+
+// Init
+renderEssays();
+</script>
 
 </body>
 </html>
